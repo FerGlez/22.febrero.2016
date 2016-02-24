@@ -1,0 +1,42 @@
+## distrito Federal###
+###### ejercicio clase#####
+### bajar la base de datos variables del cuestionario de ocuapcion y empleo i del portal del inegi del segundo trimestre del 2015
+##### importar la bas e de datos .dbf en R
+require (foreign)
+coe1t215<- read.dbf("C:\\Users\\SALA-C11\\Downloads\\COE1T215.dbf")
+coe1t215<- data.frame(coe1t215)
+
+###### Seleccionar solo al Distrito Federal###
+tabladf<-subset(coe1t215,(ENT=="09"))
+### etiquetar las preguntas ¿Aproximadamente
+####cuántas personas, incluyendo al dueño, laboran donde trabaja ...?p3q
+
+tabladf$P3L<- ordered(tabladf$P3L,levels=c("01","02","03","04","05","06","07","08","09","10","11","99"),labels=c("1 persona","2 a 5 personas","6 a 10 personas","11 a 15 personas","16 a 20 personas","21 a 30 personas","31 a 50 personas","51 a 100 personas","101 a 250 personas","251 a 500 personas","501 y más personas","No sabe" ))
+table(tabladf$P3L)
+View(table(tabladf$P3L))
+
+##¿La jornada de trabajo de ... es
+
+tabladf$P5<- ordered(tabladf$P5,levels=c("1","2","3","4","9"),labels=c("de día?","de noche?","Mixta?","Rola turnos","No sabe" ))
+table(tabladf$P5)
+View(table(tabladf$P5))
+
+###P2E ES??'
+
+tabladf$P2E<- ordered(tabladf$P2E,levels=c("1","2","3","4","5","6","9"),labels=c("una persona temporalmente ausente de su actividad u oficio","pensionado o jubilado de su empleo","estudiante","una persona que se dedica a los quehaceres de su hogar","una persona con alguna limitación física o mental que le impide trabajar por el resto de su vida","Otra condición","No sabe" ))
+table(tabladf$P2E)
+View(table(tabladf$P2E))
+
+
+
+### hacer tablas expandidas de 
+##las variables que etiquetaron con sexo.... ####NUEVO#####
+
+tabla1<-wtd.table(tabladf$P3L,tabladf$P1,weights=tabladf$FAC)
+tabla1
+
+tabla2<-wtd.table(tabladf$P5,tabladf$P1,weights=tabladf$FAC)
+tabla2
+
+tabla3<-wtd.table(tabladf$P2E,tabladf$P1,weights=tabladf$FAC)
+tabla3
