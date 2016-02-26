@@ -1,0 +1,65 @@
+#### limpiar el entorno de trabajo
+
+rm(list=ls())
+
+###### Para cargar la base de datos
+
+require(foreign)
+sdemt215<- data.frame(read.dbf("C:\\Users\\SALA-C9\\Downloads\\SDEMT215.dbf"))
+
+###Metodo 1
+### attach(SDEMT215)
+
+sdemt215$CLASE2.1[as.numeric(sdemt215$CLASE2)>=0&as.numeric(sdemt215$CLASE2)<=2]<-1
+sdemt215$CLASE2.1[as.numeric(sdemt215$CLASE2)>=3&as.numeric(sdemt215$CLASE2)<=4]<-2
+
+### detach(SDEMT215)
+### metodo 2
+attach(sdemt215)
+sdemt215$CLASE2.2<-ifelse(as.numeric(CLASE2)>=1& as.numeric(CLASE2)<=2,1,(ifelse(as.numeric(CLASE2)>=3&as.numeric(CLASE2)<=3,2,3))
+detach(sdemt215)
+
+### comparación de los metodos
+require(questionr)
+wtd.table(sdemt215$CLASE2.1)
+wtd.table(sdemt215$CLASE2.2)
+
+
+#######Ejercicio , Recodificar variable edad#########
+### 0 a 14=1 niñ@s, 15 q 29= 2 jovenes, 30 a 59=3 adultos, 60a 97= 4 adultos mayores
+### de 98 a 99= 5 no especificado
+
+
+###Metodo 1
+### attach(SDEMT215)
+
+sdemt215$EDA<-as.numeric(as.character(sdemt215$EDA))
+sdemt215$EDA.1 [as.numeric(sdemt215$EDA)>=1&as.numeric(sdemt215$EDA)<=14]<-1
+sdemt215$EDA.1[as.numeric(sdemt215$EDA)>=15&as.numeric(sdemt215$EDA)<=29]<-2
+sdemt215$EDA.1 [as.numeric(sdemt215$EDA)>=30&as.numeric(sdemt215$EDA)<=59]<-3
+sdemt215$EDA.1[as.numeric(sdemt215$EDA)>=60&as.numeric(sdemt215$EDA)<98]<-4
+sdemt215$EDA.1[as.numeric(sdemt215$EDA)>=98&as.numeric(sdemt215$EDA)<=99]<-5
+require(questionr)
+wtd.table(sdemt215$EDA.1 )
+table(sdemt215$EDA.1 )
+
+####Metodo 2####
+attach(sdemt215)
+sdemt215$EDA.2<-ifelse(as.numeric(EDA)>=0& as.numeric(EDA)<=14,1,
+                        ifelse(as.numeric(EDA)>=15&as.numeric(EDA)<=29,2,
+                               ifelse(as.numeric(EDA)>=30&as.numeric(EDA)<=59,3,
+                                      ifelse(as.numeric(EDA)>=60&as.numeric(EDA)<98,4,5))))
+table(sdemt215$EDA.2)
+detach(sdemt215)
+
+### etiquetar###
+sdemt215$EDA.1<-ordered(sdemt215$EDA.1,levels=c(1,2,3,4,5),labels=c("NIÑAS","JOVENES","ADULTOS","ADULTOS MAYORES","NO ESPECIFICADO"))
+table(sdemt215$EDA.1)
+
+sdemt215$EDA.2<-ordered(sdemt215$EDA.2,levels=c(1,2,3,4,5),labels=c("NIÑAS","JOVENES","ADULTOS","ADULTOS MAYORES","NO ESPECIFICADO"))
+table(sdemt215$EDA.2)
+
+### comparación de los metodos
+require(questionr)
+wtd.table(sdemt215$EDA.1)
+wtd.table(sdemt215$EDA.2)
