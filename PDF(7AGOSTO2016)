@@ -1,0 +1,65 @@
+### Series de tiempo
+## 7 de marzo de 2016
+
+AirPassengers ## Base de datos de una aerolinea
+help("AirPassengers")
+data("AirPassengers")
+panam <- (AirPassengers) ## si lo pons entre parentesis lo toma con un valor
+class(panam) # en la consola aparece ts (series de tiempo)
+## las series de tienmpo minimo deben contar con tres caracteristicas: cuando inicia, cuando termina y frecuencia
+start(panam); end(panam); frequency(panam)
+panam #para ver los datos
+
+##para definir una serie de tiempo
+ts() ##funcion para declarar uana base de datos como serie de tiempo
+# para graficar usamos plot
+plot(panam) 
+
+## para cambiar el titulo de los ejes
+plot (panam, main = "Número de pasajeros aereos en Estados Unidos, 1949-1960", xlab = "Años", ylab = "Pasajeros (miles)")
+## plot graficas para series
+
+## linea de tendencia
+plot(aggregate(panam))
+
+## layout para ver mas de una grafica en un mismo recuadro
+layout(1:2)
+plot(panam) 
+plot(aggregate(panam))
+
+## para declarar una serie de tiempo
+## ppp <- ts(base1, start = c(1998,1), frequency = 4)
+## start (año, mes), frequency dividido en 4 el año
+
+### ejercicio:
+## 1) generar un data frame con la tasa de desocupacion inial en el primer tirmestre 
+## del 2005
+## tasa desocupacion 3.4,4.8, 3.3, 5.6, 3.2, 2.9, 1.9, 2.8, 6.0, 4.3, 2.2
+## 2) convertirla en serie de tiempo y graficar la ST y la tendencia 
+## punto extra librarla del segundo examen
+## 3) obtener un pdf, jpg, etc,  con las dos graficas en una misma imagen
+
+## 1):
+tasa_des <- c("primer trimestre", "segundo trimestre", "tercer trimestre", "cuarto trimestre")
+año <- c(2005,2006,2007)
+tasa_desocupacion <- c(3.4,4.8, 3.3, 5.6, 3.2, 2.9, 1.9, 2.8, 6.0, 4.3, 2.2, NA)
+datos = expand.grid("Año"=año, "Tasa de desocupacion" = tasa_des)
+datos
+datos<- cbind(datos, count = tasa_desocupacion)
+datos
+datos = tapply(datos$count, datos[,1:2], sum )
+View (datos)
+
+## 2):
+serie <- ts(tasa_desocupacion, start = c(2005, 1), frequency = 4)
+serie
+
+class(serie) ## para comprobar que es serie de tiempo
+pdf("tasas_des.pdf") ## Con esto se va guardando lo que se escribe despues en el PDF
+layout(1:2)
+plot (serie, main = "Tasa de desocupacion", xlab = "años", ylab = "tasa de desocupacion")
+plot(aggregate(serie), main = "Linea de tendencia")
+
+© 2016 Microsoft Términos Privacidad y cookies Desarrolladores Español
+
+    
