@@ -1,0 +1,90 @@
+#### 1)Simular datos
+### 2) Bajar del inegi base para consultar en ST  
+###3) ST multiples
+
+##### EN este ejemplo vamos a proponer la población en México
+### que el valor ,minimo seran 100,max 120,15 datos que inicie en 2000
+pob<-sample(100:120,15,replace = F)#### sin reemplazo
+### la convertimos en serie de tiempo
+pobts<-ts(pob,  frequency=1, start = (2000)) #### ts es para
+plot(pobts)#### darle formato
+plot(aggregate(pobts))
+plot(aggregate(pobts), main = "Población en México", xlab = "Años", ylab = "Habitantes")
+
+
+#### bajar del INEGI 
+
+#### Para importar csv
+
+ocu<-ts(read.csv(("C:\\Users\\SAQLA-C12\\Downloads\\ocupa.csv"),header=F),frequency=4,start=(2005))#### HEADER se usa para 
+plot(ocu) ### darle formato
+plot(aggregate(ocu))### darle formato
+plot(aggregate(ocu), main = "Población Ocupada", xlab = "Años", ylab = "Pocentaje",col=("pink"))
+
+####  EJERCICIO
+### 1)Simular la Tasa de desocupación ,3% a 8%,2005, 40 datos,  trimestral
+### 2)DEspues bajar la verdadera tasa de desocupacion del INEGI , importar en R y comparar con la simulada 
+### con la del INEGI
+
+
+### 1) 
+
+desoc<-sample(3:8,44,replace = T)### En este caso , es TRUE porque si queremos un reemplazo
+tdesoc<-ts(desoc,frequency = 4,start = (2005))
+tdesoc
+#####2)
+
+desocts<-ts(read.csv(("C:\\Users\\SAQLA-C12\\Downloads\\desocupacion.csv"),header=F),frequency=4,start=(2005)) 
+plot(desocts) ### darle formato
+plot(aggregate(desocts))### darle formato
+plot(aggregate(desocts), main = "Población Desocupada", xlab = "Años", ylab = "Pocentaje",col=c("blue"))
+
+#### Comparar las graficas
+plot(cbind(tdesoc,desocts))
+
+## 14-marzo-2016
+
+
+indica3<-ts(read.csv(("C:\\Users\\SAQLA-C12\\Downloads\\indicadores 14.csv"),header=T),frequency=4,start=(2005))#### header es true por que laprimera celda en excel empieza con letras
+class(indica3)
+desoparcial<- ts(indica3[,3],start = 2005,frequency = 4)### hazme serie de tiempo la columna uno , que empiece en 2005 y su frecuencia que sea trimestral
+asala<- ts(indica3[,2],start = 2005,frequency = 4)
+til1<- ts(indica3[,3],start = 2005,frequency = 4)### aqui puse 2007 porlo tanto empieza a cortar la serie de tiempo
+
+seriemultiple<-ts.intersect(desoparcial,asala,til1)###ts.intersect es otra forma de hacer serie de tiempo
+seriemultiple
+plot(seriemultiple,main="Serie de tiempo multiple",xlab="años",ylab="Número de personas",col="blueviolet")
+
+
+##### separar la serie de tiempo dependiendo del ananlisis
+
+seriemultiple05.09<-window(seriemultiple,start=c(2005,1),end=c(2009,4))
+seriemultiple10.15<-window(seriemultiple,start=c(2010,1),end=c(2015,4))
+
+plot(seriemultiple05.09,main="serie de tiempo multiple",xlab="años",ylab="Número de personas",col="violetred")
+plot(seriemultiple10.15,main="serie de tiempo multiple",xlab="años",ylab="Número de personas",col="blueviolet")
+start(seriemultiple);end(seriemultiple)
+
+
+#########EJERCICIO#######
+
+
+ocupayempleo<-ts(read.csv(("C:\\Users\\SAQLA-C12\\Downloads\\ocupayempleo.csv"),header=T),frequency=4,start=(2005))#### header es true por que laprimera celda en excel empieza con letras
+class(ocupayempleo)
+servprof<- ts(ocupayempleo[,1],start = 2005,frequency = 4)### hazme serie de tiempo la columna uno , que empiece en 2005 y su frecuencia que sea trimestral
+salmin<- ts(ocupayempleo[,2],start = 2005,frequency = 4)
+salmin5<- ts(ocupayempleo[,3],start = 2005,frequency = 4)### aqui puse 2007 porlo tanto empieza a cortar la serie de tiempo
+prest<- ts(ocupayempleo[,4],start = 2005,frequency = 4)
+
+plot(ocupayempleo,main="Servicios profesionales, financieros y corporativos",xlab="años",ylab="Número de personas",col="blueviolet")
+plot(ocupayempleo,main="Hasta un salario mínimo",xlab="años",ylab="Número de personas",col="blueviolet")
+plot(ocupayempleo,main="Más de 5 salarios mínimos",xlab="años",ylab="Número de personas",col="blueviolet")
+plot(ocupayempleo,main="Con prestaciones",xlab="años",ylab="Número de personas",col="blueviolet")
+
+ocupayempleo05<-ts.intersect(servprof,salmin,salmin5,prest)###ts.intersect es otra forma de hacer serie de tiempo
+plot(ocupayempleo,main="Ocupacion y empleo",xlab="años",ylab="Número de personas",col="blueviolet")
+
+
+seriemultipleocupayempleo19<-window(ocupayempleo,start=c(2005,1),end=c(2009,4))
+plot(ocupayempleo,main="Ocupacion y empleo",xlab="años",ylab="Número de personas",col="blueviolet")
+
