@@ -1,0 +1,36 @@
+#### Generar 4 objetos con datos aleatorios y que tengan 60 datos
+### dato 1 de n?mero de profesionista (mill)rango de 5 a 8
+### dato 2 crec pib rango de 0 a 5
+### dato 3 porcentaje de ocupados rango de 40 a 60
+### dato 4 porcentaje de desocupados rango de 3 a 8
+#### 1) una vez que generen los datos hacer un data frame de los 4 objetos
+#### 2) mostrar en consola los primeros 12 y ultimos 12 datos
+#### 3) convertir los objetos en series de tiempo desde el data frame comezando en 2010 y son datos mensuales
+#### 4) graficar los profesionistas y ocupados en la misma imagen
+#### 5) graficar pib y desocupados en la misma imagen
+#### 6) graficar todas juntas
+### 7) creaR serie de tiempo multiple!!!!8
+#### 8 ) graficar serie de tiempo multiple 
+#### 9 ) dividir serie de tiempo y graficar solo el ultimo año...
+#### 8 ) analizar las graficas ( si hay alguna tendencia o variacion estacional) (investigar)
+
+dato1 <- sample(5:8, 60, replace= TRUE) 
+dato2 <- sample(0:5, 60, replace = TRUE) 
+dato3 <- sample(40:60, 60, replace= TRUE) 
+dato4 <- sample(3:8, 60, replace = TRUE)
+tabla1 <- data.frame(dato1, dato2, dato3, dato4) 
+tabla1[c(seq(1:12), seq(49:60)), seq(1:4)] 
+serie_tiempo <- ts(tabla1, start = 2010, frequency = 12) 
+profesionistas <- ts(sample(5:8, 60, replace= TRUE), start = 2010, frequency = 12) 
+pib <- ts(sample(0:5, 60, replace = TRUE), start = 2010, frequency = 12)
+ocupados <- ts (sample(40:60, 60, replace= TRUE), start = 2010, frequency = 12) 
+desocupados <- ts (sample(3:8, 60, replace = TRUE), start = 2010, frequency = 12)
+plot (cbind(profesionistas, ocupados), main = "Profesionistas y Ocupados", xlab= "Años", ylab= " # personas")
+plot (cbind(pib, desocupados), main = "PIB y Desocupados", xlab= "Años", ylab= " # personas")
+plot (cbind(pib, desocupados, profesionistas, ocupados), main = "PIB, Ocupados, Desocupados y Profesionistas", xlab= "Años", ylab= " # personas")
+plot(serie_tiempo, main = "PIB, Ocupados, Desocupados y Profesionistas", xlab = "Años" )
+seriemultiple <- ts.intersect(profesionistas, ocupados, desocupados, pib) 
+plot(seriemultiple, main = "Serie Multiple", xlab= "Años")
+seriemultiple2014<- window(seriemultiple, start = c(2014,1), end= c(2014,12)) 
+plot(seriemultiple2014, main = "2014", xlab = "Años")
+plot(aggregate(seriemultiple), main = "PIB, Ocupados, Desocupados y Profesionistas", xlab = "Años")
