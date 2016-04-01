@@ -1,0 +1,73 @@
+# normalmente se utiliza el modelo aditivo.... Este modelo es apropiado
+## cuando la magnitud de las fluctuaciones estacionales de la serie no varia al hacerlo 
+#la tendencia
+
+#### Se utiliza multiplicativo
+
+### cuando la magnitud de las fluctuaciones estaconales de la serie crece y decrece
+# proporcionalmente con los crecimientos y decrecimientos fr la tendencia,respect.
+
+#3 una vez que logramos descomponer la st en diversos los elementos de estacionalidad 
+#y tendencia hay que desestacionalizar la st y eliminarla tendencia
+
+#Existe tendencia cyuando:
+### existe un patron en los datos a largo plazo ya sea
+## que aumenta o disminuya los datos
+# la estacionalidad existe cuando
+#la ST cuando es influenciado por factores estacionales(por ejemplo, el
+## trimestre del año,el mes , o el dia de la semana).
+#Existe competente de ciclico en los datos cuando 
+#se detectan incrementos y caidas que no son de tiempo determinado
+###(duración por lo general de al menos 2 años).
+
+
+# De estos 3 elementos normalmente existen confusiones para detectarlos entre
+# la estacionalidad y  el componente ciclico.
+# Las principales diferencias entre estos dos componentes}
+# 1) Patrón estacional longitud constante; patrón ciclico longitud variable
+# 2) Duración media delcomponente ciclico más largo que la longitud del patron estacional
+# 3) Magnitud de ciclico más variable que magnitud del patrón estacional
+# 4) El momento de picos y caidas es predecible con los datos estacionales
+# ,pero impredecible a largo plazo con datos ciclicos.
+
+
+## tendencia= porque hay incremento
+## estacionalidad= mismo comportamiento cada cierto tiempo
+## ciclico= cuando tiene picos muy largos
+
+install.packages("fpp")
+require(fpp)
+help(fpp)
+plot(window(elec,start = 1980),ylab="GWh",xlab="year",main="Australian electricity production")
+# Estacionalidad, tendencia, y no ciclico
+plot(bricksq,ylab="million units",xlab="year",main="australian clay brick production")
+### estacionalidad y ciclo, no mucha tendencia
+plot(hsales,main="sales of new one-family houses, USA", ylab="total sales", xlab="Year")
+
+
+##### ejemplos graficas detectar tendencia,estacionalidad y ciclo
+
+Femsa<-read.csv("femsa.csv", header=T)
+Femsats<- ts (Femsa[,5],start=2000,frequency=12)
+pdf("femsa.pdf")
+plot(Femsats,main="valor de las acciones de Femsa",ylab="valor de cierre")
+#### Hay tendencia desde el año 2000 hasta aproximadamente el año 2009 en donde 
+## se presenta un ciclo. Despues del ciclo viene una tendencia que continua hasta el 2015
+
+
+alfa<-read.csv("alfa.csv", header=T)
+alfats<- ts (alfa[,5],start=2000,frequency=12)
+pdf("alfa.pdf")
+plot(alfats,main="valor de las acciones de alfa",ylab="valor de cierre")
+#### Existe una tendencia del 2001 al 2008 , en el 2009 se presenta un ciclo y vuelve 
+### otro ciclo muy marcado en 2012
+
+
+arca<-read.csv("arca.csv", header=T)
+arcats<- ts (arca[,5],start=2000,frequency=12)
+plot(arcats,main="valor de las acciones de Arca",ylab="valor de cierre")
+### Encontramos tendencia a partir del año 2009, un ciclo en 2011 y otro en 2013
+pdf("arca.pdf")
+ts.plot(alfats,arcats,Femsats,main="Precio de acciones",xlab="Años",ylab="Precio")
+dev.off()
+
