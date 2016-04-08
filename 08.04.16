@@ -1,0 +1,64 @@
+###### examen ####
+# 2 portes
+### 1)generar nosotros un script ( en la computadora)
+### 2) El profesor nos entrega un script ynos dicde en que lineas(en papel)
+### explicar o realizar comentarios
+###Estructura del examen###
+##### 1) manejo de bases de datos en R
+##### 1) exportar baes, etiquetar , generar una base de datos, decodificar,
+##### seleccionar casos, grafica
+######2) series de tiempo en r
+##### decalra una st, dividir st, graficar st
+#####interpretar graficas con estacionalidad,
+##### tendencia y ciclo
+##### 2.1) como determinar estacionalidad en una st
+##### con lafuncion de autocorrelacion, calculo de
+##### correlacion y covarianza....
+
+
+
+###### lunes 18 de examen####
+###### repaso 11 de abril########
+
+### la funcion de autcorrelacion
+### la autocorrelacion entre dos variables
+#### separadas por k variables
+#### propiedades de la autocrrelacion
+### P0=1
+#### -1<=PO<=1
+#### simetrica Pj<=pj-1
+
+install.packages("fpp")#### instala la paquetiri pero en la compu(la jala de internet)
+require(fpp)### debemos poner este para llamar la ´paqueteria, 
+#porque r optimiza su memoria
+acf(beer)### funcion para reconocer la autocorrelacion de los datos
+xx<- acf(beer, main="ACF of quarterly beer production")
+
+names(xx)
+xx$acf
+
+### results for first 9 lags for beer data:
+r1        r2        r3
+
+
+### la grafica que genera el acf se le denomina
+### correlograma y permite identificar 
+#### la autocorrelacion en una serie de tiempo
+
+### si hay estacionalidad,la  acf en el desfase temporal
+### sera grande y positivo
+
+######### netflix#######
+nfix<- read.csv("C:\\Users\\SALA-C12\\Documents\\netflix.csv",header=TRUE)
+nfixts<- ts(nfix[,5],start=2015, frequency = 12)#### generas la st y con los corchetes 
+#### ya dices que columna quieres
+x11()
+plot.ts(nfixts)
+
+
+
+### ejemplo
+
+fc<- rwf(dj)
+res<-residuals(fc)#### para pronosticar
+plot(res)
