@@ -1,0 +1,59 @@
+install.packages("fpp")
+library(fpp)
+library(forecast)
+labo<- read.csv("C:\\Users\\SALA-D12\\Documents\\indicadores .csv")
+part<-ts(labo[,1], start=2005,frequency=4)### 4 trimestres porquie es un año
+plot(part)
+Acf(part)
+
+###############MEDIA#############
+
+### meanf (part,h)
+partpro<-meanf(part,4)### part=participacion meanf pronostica la media
+### de la serie del tiempo
+plot(partpro)
+#####
+###
+#############INGENUO########
+partnai<-naive(part,4)##### proyecta con base en el ultimo valor
+plot(partnai)
+rwf(part,3) # alternattivo
+
+
+##############INGENUO ESTACIONAL#######
+#### pronostica tomando el ultimo periodo de tus valores anteriores (el mismo valor del trimestre que quieres pero del año anterior)
+partsnai<-snaive(part,4)
+partsnai
+plot(partsnai)
+help(snaive)
+
+############ METOODO DE LA DERIVA#########
+
+partder<- rwf(part,4,drift=T)### drift activa que sea a la deriva,le dijo a R que me calcules con este metodo
+###
+partder
+plot(partder)
+#### rwf,h, drift=TRUE
+
+########EJEMPLO#######
+
+part1<- window(part,start=2005,end=2010)
+partaj1<-meanf(part1,h=4)
+partaj2<-naive(part1,h=4)
+partaj3<-snaive(part1,h=4)
+
+plot(partaj1,plot.conf=FALSE,main="Proyección tasas de desempleo")#### Si ponemos true,te da los intervalos de confianza
+#### en este caso los intervalos de confianza son diferentes para cada caso
+lines(partaj2$mean,col=2)#### que me genere las lineas demi segunda serie de tiempo
+lines(partaj3$mean,col=3)
+lines(partaj1$mean, col=4)
+legend("topleft",lty=1,col=c(1,2,3,4),legend=c("Metodo media","Metodo ingenuo","Metodo ingenuo estacional"))
+#### legend es como estiquetar cada una de laslineas
+
+plot(part,plot.conf=F,xlim=c(2005,2011),main="Proyección tasas de desempleo")#### Si ponemos true,te da los intervalos de confianza
+#### en este caso los intervalos de confianza son diferentes para cada caso
+lines(partaj2$mean,col=3)#### que me genere las lineas demi segunda serie de tiempo
+lines(partaj3$mean,col=4)
+lines(partaj1$mean, col=2)
+legend("topleft",lty=1,col=c(2,3,4),legend=c("Metodo media","Metodo ingenuo","Metodo ingenuo estacional"))
+#### legend es como estiquetar cada una de laslineas
