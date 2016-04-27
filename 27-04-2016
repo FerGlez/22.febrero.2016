@@ -1,0 +1,28 @@
+pib<- read.csv("C:\\Users\\SALA-D12\\Documents\\PIB 2.csv",header=F)####Se pone coma o punto dependiendo de excel para que muestre los decimales
+pibts<- ts(pib[,2],start = 1993,frequency = 4)
+
+View(pib)
+View(pibts)
+plot(pibts)#### graficar
+Acf(pibts)
+
+pitspro<- meanf(pibts,4)
+plot(pitspro)
+pitsnai<- naive(pibts,4)
+plot(pitsnai)
+pitssnai<- snaive(pibts,4)
+plot(pitssnai)
+pitssder<- rwf(pibts,4)
+plot(pitssder)
+
+evalmed<-accuracy(pitspro)
+evaling<-accuracy(pitsnai)
+evalsnai<-accuracy(pitssnai)
+evalder<-accuracy(pitssder)
+
+evalmed
+evaling
+evalsnai
+evalder
+
+#######MAE,MAPE,RMSE,MASE= son cercanos a 0
