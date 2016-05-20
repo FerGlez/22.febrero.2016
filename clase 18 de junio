@@ -1,0 +1,125 @@
+##Clase 18 de mayo de 2016 ##
+
+install.packages("fpp")
+
+library (fpp)
+
+install.packages("forecast")
+
+library (forecast)
+
+install.packages("foreing")
+
+library (foreing)
+
+coca<- read.csv("C:\\Users\\Fer\\Desktop\\coca.csv")
+
+apple <-  read.csv("C:\\Users\\Fer\\Desktop\\apple.csv")
+
+tscoca <- ts(coca[,2], start = 2015, frequency = 52)
+
+tsapple <- ts(apple[,2], start = 2015, frequency = 52)
+
+plot(tscoca)
+
+plot(tsapple)
+
+
+
+
+#### Primera 
+
+coca_ajustehl <- holt(tscoca,initial = "simple", h= 4)
+
+coca_ajustehe <- holt(tscoca,initial = "simple", exponential = T, h= 4)
+
+coca_ajusaa <- holt(tscoca, damped = T)
+
+coca_ajusma <-holt(tscoca, exponential = T, damped = T)
+
+
+
+
+plot(tscoca, plot.conf =FALSE, main = "Precio de Acciones de Coca-Cola") 
+
+lines(fitted(coca_ajustehl), col = 2)
+
+lines(fitted(coca_ajustehe), col = 3)
+
+lines(fitted(coca_ajusaa), col = 4)
+
+lines(fitted(coca_ajusma), col = 5)
+
+legend("topleft", lty = 5, col= c(1,2,3,4,5), legend = c("holt lineal", "holt exponencial", "aditiva amortiguada", "multiplicativa amortiguada"))
+
+
+
+
+coca_meanf <- meanf(tscoca,4)
+
+coca_menf_eval <- accuracy(coca_meanf)
+
+coca_naive <- naive(tscoca,4)
+
+coca_naive_eval <- accuracy(coca_naive)
+
+coca_snaive <- snaive(tscoca,4)
+
+coca_snaive_eval <- accuracy(coca_snaive)
+
+coca_rwf <- rwf(tscoca,4, drift = T)
+
+coca_rwf_eval <- accuracy(coca_rwf)
+
+
+
+
+
+
+
+#### serie 2 
+
+apple_ajustehl <- holt(tsapple,initial = "simple", h= 4)
+
+apple_ajustehe <- holt(tsapple,initial = "simple", exponential = T, h= 4)
+
+apple_ajusaa <- holt(tsapple, damped = T)
+
+apple_ajusma <-holt(tsapple, exponential = T, damped = T)
+
+
+
+
+plot(tsapple, plot.conf =FALSE, main = "Precio de Acciones de Apple") 
+
+lines(fitted(apple_ajustehl), col = 2)
+
+lines(fitted(apple_ajustehe), col = 3)
+
+lines(fitted(apple_ajusaa ), col = 4)
+
+lines(fitted(apple_ajusma), col = 5)
+
+legend("topleft", lty = 5, col= c(1,2,3,4,5), legend = c("holt lineal", "holt exponencial", "aditiva amortiguada", "multiplicativa amortiguada"))
+
+
+
+
+apple_meanf <- meanf(tsapple,4)
+
+apple_naive <- naive(tsapple,4)
+
+apple_snaive <- snaive(tsapple,4)
+
+apple_rwf <- rwf(tsapple,4, drift = T)
+
+
+
+
+apple_menaf_eval <- accuracy(apple_meanf)
+
+aplle_naive_eval <- accuracy(apple_naive)
+
+apple_snaive_eval <- accuracy(apple_snaive)
+
+apple_rwf_eval <- accuracy(apple_rwf)
