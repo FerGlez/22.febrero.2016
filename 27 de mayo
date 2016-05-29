@@ -1,0 +1,19 @@
+#####Elejir una serie de tiempo
+####Aplicar la función auto.arima (p,q,d)
+#Apliquen función arima(p,q,d) con dos modelos diferentes  al que genere la función auto arima
+##Generar los pronósticos de los 3 modelos
+##Generar una gráfica con los valores reales y los valores ajustados de los tres modelos
+##Generar gráfica con los valores ajustados y pronosticados en los tres modelo
+numpronos -> 4
+require (fpp) apple <- read.csv ("C:\Users\Fer\Documentos\apple.csv")
+ applets <- ts(apple[,2], start = 2015, frequency = 52)
+ appletsmod1 <- auto.arima(applets, seasonal=FALSE) 
+mod1 
+mod2 <- Arima(applets, order= c(0, 0, 1)) mod3 <- Arima(applets, order= c(1, 0, 0))
+pron1<- forecast (mod1, h=6) 
+pron2<- forecast (mod2, h=6)
+pron3<- forecast (mod3, h=6)
+plot(pronos1, plot.conf=FALSE, ylab="Precios", xlab="Semana, 2015", main="Precios Apple Acciones", fcol="white", type="o") lines(fitted(pronos2), col="deepskyblue4", type="o") lines(fitted(pronos3), col="darkorange", type="o") lines(pronos1$mean, col=" deepskyblue4", type="o") lines(pronos2$mean, col=" darkorange", type="o") lines(pronos3$mean, col=" darkorchid ", type="o") legend("topleft",lty=5, col=c(1," deepskyblue4"," darkorange "," darkorchid"), c("datos reales","mod1", "mod2", "mod3"),pch=1)
+## fitted son los ajustes del pronóstico 
+##En pronostico$mean es el pronóstico como tal
+
